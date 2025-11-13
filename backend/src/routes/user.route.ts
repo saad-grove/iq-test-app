@@ -4,13 +4,9 @@ import protectRoute from "../middleware/auth.middleware";
 
 const userRouter = Router();
 
-userRouter.post("/auth/register", userController.registerUserController);
-userRouter.post("/auth/login", userController.loginUserController);
+userRouter.post("/register", userController.registerUserController);
+userRouter.post("/login", userController.loginUserController);
 
-userRouter.get(
-  "/auth/profile",
-  protectRoute,
-  userController.getProfileController
-);
+userRouter.get("/profile", protectRoute, userController.getProfileController);
 
 export default userRouter;
