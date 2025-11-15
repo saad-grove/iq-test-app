@@ -1,5 +1,6 @@
+import { registerUserAPI } from "@/api/user.api";
 import { useRouter } from "expo-router";
-import { useRef } from "react";
+import { useRef, useState } from "react";
 import {
   View,
   Text,
@@ -8,11 +9,31 @@ import {
   TouchableWithoutFeedback,
   Keyboard,
   TouchableOpacity,
+  ActivityIndicator,
 } from "react-native";
 
 const Register = () => {
   const passwordRef = useRef<TextInput>(null);
   const router = useRouter();
+
+  const [name, setName] = useState("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+
+  const [loading, setLoading] = useState(false);
+
+  const handleRegister = async () => {
+    setLoading(true);
+    try {
+      await registerUserAPI(name, email, password);
+      alert("Account created");
+      router.push("/login");
+    } catch (error) {
+      alert("Error registering user");
+    } finally {
+      setLoading(false);
+    }
+  };
 
   return (
     <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
@@ -24,6 +45,8 @@ const Register = () => {
           <TextInput
             className={`border-2 border-neutral-800/70 w-[350px] rounded-full pl-6 ${Platform.OS === "ios" && "h-[55px]"} text-lg font-semibold text-neutral-800`}
             placeholder="Enter your name"
+            value={name}
+            onChangeText={setName}
             returnKeyType="next"
             onSubmitEditing={() => passwordRef.current?.focus()}
           />
@@ -31,11 +54,15 @@ const Register = () => {
             ref={passwordRef}
             className={`border-2 border-neutral-800/70 w-[350px] rounded-full pl-6 ${Platform.OS === "ios" && "h-[55px]"} text-lg font-semibold text-neutral-800`}
             placeholder="Enter your email"
+            value={email}
+            onChangeText={setEmail}
             returnKeyType="next"
             onSubmitEditing={() => passwordRef.current?.focus()}
           />
           <TextInput
             ref={passwordRef}
+            value={password}
+            onChangeText={setPassword}
             className={`border-2 border-neutral-800/70 w-[350px] rounded-full pl-6 ${Platform.OS === "ios" && "h-[55px]"} placeholder:text-lg font-semibold text-neutral-800`}
             placeholder="Enter your password"
             onSubmitEditing={() => passwordRef.current?.focus()}
@@ -51,10 +78,17 @@ const Register = () => {
           />
         </View>
         <View className="flex justify-center items-center w-full flex-col gap-y-6">
-          <TouchableOpacity className="bg-neutral-800 w-[350px] rounded-full py-5">
-            <Text className="text-center text-neutral-200 text-lg font-semibold">
-              Register
-            </Text>
+          <TouchableOpacity
+            onPress={handleRegister}
+            className="bg-neutral-800 w-[350px] rounded-full py-5"
+          >
+            {loading ? (
+              <ActivityIndicator />
+            ) : (
+              <Text className="text-center text-neutral-200 text-lg font-semibold">
+                Register
+              </Text>
+            )}
           </TouchableOpacity>
           <View className="flex justify-center items-center text-center w-full flex-row gap-x-1">
             <Text>Already already exist?</Text>
