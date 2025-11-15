@@ -10,7 +10,7 @@ import {
   TouchableOpacity,
 } from "react-native";
 
-const Login = () => {
+const Register = () => {
   const passwordRef = useRef<TextInput>(null);
   const router = useRouter();
 
@@ -23,6 +23,13 @@ const Login = () => {
         <View className="flex justify-center items-center w-full flex-col gap-y-6">
           <TextInput
             className={`border-2 border-neutral-800/70 w-[350px] rounded-full pl-6 ${Platform.OS === "ios" && "h-[55px]"} text-lg font-semibold text-neutral-800`}
+            placeholder="Enter your name"
+            returnKeyType="next"
+            onSubmitEditing={() => passwordRef.current?.focus()}
+          />
+          <TextInput
+            ref={passwordRef}
+            className={`border-2 border-neutral-800/70 w-[350px] rounded-full pl-6 ${Platform.OS === "ios" && "h-[55px]"} text-lg font-semibold text-neutral-800`}
             placeholder="Enter your email"
             returnKeyType="next"
             onSubmitEditing={() => passwordRef.current?.focus()}
@@ -31,6 +38,14 @@ const Login = () => {
             ref={passwordRef}
             className={`border-2 border-neutral-800/70 w-[350px] rounded-full pl-6 ${Platform.OS === "ios" && "h-[55px]"} placeholder:text-lg font-semibold text-neutral-800`}
             placeholder="Enter your password"
+            onSubmitEditing={() => passwordRef.current?.focus()}
+            returnKeyType="next"
+            secureTextEntry
+          />
+          <TextInput
+            ref={passwordRef}
+            className={`border-2 border-neutral-800/70 w-[350px] rounded-full pl-6 ${Platform.OS === "ios" && "h-[55px]"} placeholder:text-lg font-semibold text-neutral-800`}
+            placeholder="Confirm password"
             returnKeyType="done"
             secureTextEntry
           />
@@ -38,16 +53,16 @@ const Login = () => {
         <View className="flex justify-center items-center w-full flex-col gap-y-6">
           <TouchableOpacity className="bg-neutral-800 w-[350px] rounded-full py-5">
             <Text className="text-center text-neutral-200 text-lg font-semibold">
-              Login
+              Register
             </Text>
           </TouchableOpacity>
           <View className="flex justify-center items-center text-center w-full flex-row gap-x-1">
-            <Text>New to IQ Test App?</Text>
+            <Text>Already already exist?</Text>
             <Text
               className="font-bold underline"
-              onPress={() => router.push("/register")}
+              onPress={() => router.push("/login")}
             >
-              Create Account
+              Sign In
             </Text>
           </View>
         </View>
@@ -56,4 +71,4 @@ const Login = () => {
   );
 };
 
-export default Login;
+export default Register;
