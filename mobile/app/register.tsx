@@ -19,11 +19,18 @@ const Register = () => {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
 
   const [loading, setLoading] = useState(false);
+  const [passError, setPassError] = useState(false);
 
   const handleRegister = async () => {
     setLoading(true);
+    if (confirmPassword !== password) {
+      setPassError(true);
+      setLoading(false);
+      return;
+    }
     try {
       await registerUserAPI(name, email, password);
       alert("Account created");
@@ -39,43 +46,42 @@ const Register = () => {
     <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
       <View className="flex-1 justify-between items-center flex-col py-10 px-4">
         <View className="mt-10">
-          <Text>Logo Here</Text>
+          <Text className="font-elms">Logo Here</Text>
         </View>
         <View className="flex justify-center items-center w-full flex-col gap-y-6">
           <TextInput
-            className={`border-2 border-neutral-800/70 w-[350px] rounded-full pl-6 ${Platform.OS === "ios" && "h-[55px]"} text-lg font-semibold text-neutral-800`}
+            className={`font-elms border-2 border-neutral-800/70 w-[350px] rounded-full pl-6 ${Platform.OS === "ios" && "h-[55px]"} text-lg font-semibold text-neutral-800`}
             placeholder="Enter your name"
             value={name}
             onChangeText={setName}
-            returnKeyType="next"
-            onSubmitEditing={() => passwordRef.current?.focus()}
           />
           <TextInput
             ref={passwordRef}
-            className={`border-2 border-neutral-800/70 w-[350px] rounded-full pl-6 ${Platform.OS === "ios" && "h-[55px]"} text-lg font-semibold text-neutral-800`}
+            className={`font-elms border-2 border-neutral-800/70 w-[350px] rounded-full pl-6 ${Platform.OS === "ios" && "h-[55px]"} text-lg font-semibold text-neutral-800`}
             placeholder="Enter your email"
             value={email}
             onChangeText={setEmail}
-            returnKeyType="next"
-            onSubmitEditing={() => passwordRef.current?.focus()}
           />
           <TextInput
             ref={passwordRef}
             value={password}
             onChangeText={setPassword}
-            className={`border-2 border-neutral-800/70 w-[350px] rounded-full pl-6 ${Platform.OS === "ios" && "h-[55px]"} placeholder:text-lg font-semibold text-neutral-800`}
+            className={`font-elms border-2 border-neutral-800/70 w-[350px] rounded-full pl-6 ${Platform.OS === "ios" && "h-[55px]"} placeholder:text-lg font-semibold text-neutral-800`}
             placeholder="Enter your password"
-            onSubmitEditing={() => passwordRef.current?.focus()}
-            returnKeyType="next"
-            secureTextEntry
           />
           <TextInput
             ref={passwordRef}
-            className={`border-2 border-neutral-800/70 w-[350px] rounded-full pl-6 ${Platform.OS === "ios" && "h-[55px]"} placeholder:text-lg font-semibold text-neutral-800`}
+            className={`font-elms border-2 border-neutral-800/70 w-[350px] rounded-full pl-6 ${Platform.OS === "ios" && "h-[55px]"} placeholder:text-lg font-semibold text-neutral-800`}
             placeholder="Confirm password"
+            value={confirmPassword}
+            onChangeText={setConfirmPassword}
             returnKeyType="done"
-            secureTextEntry
           />
+          {passError && (
+            <Text className="font-elms text-red-500">
+              Confirm password did not match with password.
+            </Text>
+          )}
         </View>
         <View className="flex justify-center items-center w-full flex-col gap-y-6">
           <TouchableOpacity
@@ -85,15 +91,15 @@ const Register = () => {
             {loading ? (
               <ActivityIndicator />
             ) : (
-              <Text className="text-center text-neutral-200 text-lg font-semibold">
+              <Text className="font-elms text-center text-neutral-200 text-lg font-semibold">
                 Register
               </Text>
             )}
           </TouchableOpacity>
           <View className="flex justify-center items-center text-center w-full flex-row gap-x-1">
-            <Text>Already already exist?</Text>
+            <Text className="font-elms">Already already exist?</Text>
             <Text
-              className="font-bold underline"
+              className="font-bold font-elms underline"
               onPress={() => router.push("/login")}
             >
               Sign In
